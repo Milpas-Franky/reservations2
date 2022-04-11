@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %} 
+{% block title %}Fiche d'un role{% endblock %}
+
+{% block body %}
+    <h1>{{ role.role|capitalize }}</h1>
+    <nav><a href="{{ path('app_roles') }}">Retour à l'index</a></nav>
+	
+
+{% endblock %}
