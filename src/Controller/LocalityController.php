@@ -19,7 +19,7 @@ class LocalityController extends AbstractController
 
         return $this->render('locality/index.html.twig', [
             'localities' => $localities,
-            'resource' => 'localities',
+            'resource' => 'localitées',
 
         ]);
     }
