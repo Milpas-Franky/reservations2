@@ -9,7 +9,9 @@ use App\Entity\Locality;
 
 class LocalityController extends AbstractController
 {
-    #[Route('/locality', name: 'app_locality')]
+	/**
+     * @Route("/locality", name="app_locality")
+	 */
     public function index(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Locality::class);

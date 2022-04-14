@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Roles;
 
-
-
 class RolesController extends AbstractController
 {
-    #[Route('/roles', name: 'app_roles')]
+	/**
+     * @Route("/roles", name="app_roles")
+     */
     public function index(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Roles::class);
