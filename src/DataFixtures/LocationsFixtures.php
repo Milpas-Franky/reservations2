@@ -1,6 +1,6 @@
 <?php
-namespace App\DataFixtures;
 
+namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -8,13 +8,13 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\Entity\Locations;
 use Cocur\Slugify\Slugify;
 
-class Locations extends Fixture implements DependentFixtureInterface 
+class LocationsFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
         // $manager->persist($product);
-        $locations = [
+         $locations = [
             [
                 'slug'=>null,
                 'designation'=>'Espace Delvaux / La Vénerie',
@@ -50,8 +50,8 @@ class Locations extends Fixture implements DependentFixtureInterface
         ];
         
         foreach ($locations as $record) {
-		    $slugify = new Slugify();
-	        $location_slug = $slugify->slugify($record['designation']);
+		$slugify = new Slugify();
+	$location_slug = $slugify->slugify($record['designation']);
             $location = new Locations();
             $location->setSlug($location_slug);
             $location->setDesignation($record['designation']);
@@ -64,7 +64,7 @@ class Locations extends Fixture implements DependentFixtureInterface
 
         $manager->flush();
     }
-	public function getDependencies() {
+	    public function getDependencies() {
         return [
             LocalityFixtures::class,
         ];
