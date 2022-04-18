@@ -23,7 +23,12 @@
             <p>Pas de téléphone</p>
             {% endif %}
         </address>
-        
+           <h2>Liste des spectacles</h2>
+        <ul>
+        {% for show in location.shows %}
+            <li>{{ show.title }}</li>
+        {% endfor %}
+
     </article>
 
     <nav><a href="{{ path('app_locations') }}">Retour à l'index</a></nav>
