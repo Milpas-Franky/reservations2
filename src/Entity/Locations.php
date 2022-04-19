@@ -59,9 +59,15 @@ class Locations
      */
     private $shows;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Representations::class, mappedBy="the_location")
+     */
+    private $representations;
+
     public function __construct()
     {
         $this->shows = new ArrayCollection();
+        $this->representations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,6 +171,36 @@ class Locations
             // set the owning side to null (unless already changed)
             if ($show->getLocation() === $this) {
                 $show->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Representations>
+     */
+    public function getRepresentations(): Collection
+    {
+        return $this->representations;
+    }
+
+    public function addRepresentation(Representations $representation): self
+    {
+        if (!$this->representations->contains($representation)) {
+            $this->representations[] = $representation;
+            $representation->setTheLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentation(Representations $representation): self
+    {
+        if ($this->representations->removeElement($representation)) {
+            // set the owning side to null (unless already changed)
+            if ($representation->getTheLocation() === $this) {
+                $representation->setTheLocation(null);
             }
         }
 

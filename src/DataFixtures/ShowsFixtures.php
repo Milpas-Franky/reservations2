@@ -75,7 +75,7 @@ class ShowsFixtures extends Fixture implements DependentFixtureInterface
 
             $show->setBookable($record['bookable']);
             $show->setPrice($record['price']);
-            
+            $this->addReference($show->getSlug(), $show);
             $manager->persist($show);
         }
 
