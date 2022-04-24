@@ -3,6 +3,13 @@
 
 {% block body %}
     <h1>{{ role.role|capitalize }}</h1>
+	<h2>Liste des utilisateurs</h2>
+    <ul>
+    {% for user in role.users %}
+        <li>{{ user.firstname }} {{ user.lastname }}</li>
+    {% endfor %}
+    </ul>
+
     <nav><a href="{{ path('app_roles') }}">Retour à l'index</a></nav>
 	
 
