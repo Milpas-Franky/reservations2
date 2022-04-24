@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Users;
-use App\DataFixtures\RolesFixtures;
+
 
 class UsersFixtures extends Fixture
 {
@@ -17,7 +17,7 @@ class UsersFixtures extends Fixture
             [
                 'login'=>'bob',
                 'password'=>'123',
-                'firstname'=>'bob',
+				'firstname'=>'bob',
                 'lastname'=>'Dylan',
                 'email'=>'bob@sull.com',
                 'langue'=>'fr',
@@ -26,7 +26,7 @@ class UsersFixtures extends Fixture
             [
                 'login'=>'fred',
                 'password'=>'123',
-                'firstname'=>'fred',
+				'firstname'=>'fred',
                 'lastname'=>'Mercuri',
                 'email'=>'fred@sull.com',
                 'langue'=>'en',
@@ -35,7 +35,7 @@ class UsersFixtures extends Fixture
              [
                 'login'=>'stef',
                 'password'=>'123',
-                'firstname'=>'stef',
+				'firstname'=>'stef',
                 'lastname'=>'Kapond',
                 'email'=>'stef@sull.com',
                 'langue'=>'en',
@@ -50,6 +50,7 @@ class UsersFixtures extends Fixture
 
             //Hasher le mot de passe
             $user->setPassword(password_hash($record['password'], PASSWORD_BCRYPT));
+
             $user->setFirstname($record['firstname']);
             $user->setLastname($record['lastname']);
             $user->setEmail($record['email']);
@@ -58,7 +59,7 @@ class UsersFixtures extends Fixture
             $this->addReference(
                     $record['firstname']."-".$record['lastname'],
                     $user);
-             
+           
         }
 
         $manager->flush();

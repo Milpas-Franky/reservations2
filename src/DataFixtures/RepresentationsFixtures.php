@@ -47,6 +47,11 @@ class RepresentationsFixtures extends Fixture implements DependentFixtureInterfa
             $representation->setSchedule(new \DateTime($record['schedule']));
                         
             $manager->persist($representation);
+			$this->addReference(
+                    $record['the_show']."-".$record['schedule'],
+                    $representation
+            );
+
         }
 
         $manager->flush();

@@ -22,6 +22,11 @@ $usersroles = [
                 'lastname'=>'Mercuri',
                 'role'=>'member',
             ],
+			[
+                'firstname'=>'stef',
+                'lastname'=>'Kapond',
+                'role'=>'member',
+            ],
             [
                 'firstname'=>'stef',
                 'lastname'=>'Kapond',
