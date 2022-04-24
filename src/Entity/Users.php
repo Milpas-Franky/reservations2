@@ -64,9 +64,15 @@ class Users
      */
     private $roles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RepresentationsUsers::class, mappedBy="users", orphanRemoval=true)
+     */
+    private $usersrepresentations;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->usersrepresentations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +172,36 @@ class Users
     public function removeRole(Roles $role): self
     {
         $this->roles->removeElement($role);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RepresentationsUsers>
+     */
+    public function getUsersrepresentations(): Collection
+    {
+        return $this->usersrepresentations;
+    }
+
+    public function addUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    {
+        if (!$this->usersrepresentations->contains($usersrepresentation)) {
+            $this->usersrepresentations[] = $usersrepresentation;
+            $usersrepresentation->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    {
+        if ($this->usersrepresentations->removeElement($usersrepresentation)) {
+            // set the owning side to null (unless already changed)
+            if ($usersrepresentation->getUsers() === $this) {
+                $usersrepresentation->setUsers(null);
+            }
+        }
 
         return $this;
     }

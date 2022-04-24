@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RepresentationsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 /**
@@ -34,6 +36,16 @@ class Representations
 	 * @ORM\JoinColumn(name="location_id", referencedColumnName="id", onDelete="RESTRICT") 
      */
     private $the_location;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RepresentationsUsers::class, mappedBy="representations", orphanRemoval=true)
+     */
+    private $representationsusers;
+
+    public function __construct()
+    {
+        $this->representationsusers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -72,6 +84,36 @@ class Representations
     public function setTheLocation(?Locations $the_location): self
     {
         $this->the_location = $the_location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RepresentationsUsers>
+     */
+    public function getRepresentationsusers(): Collection
+    {
+        return $this->representationsusers;
+    }
+
+    public function addRepresentationsuser(RepresentationsUsers $representationsuser): self
+    {
+        if (!$this->representationsusers->contains($representationsuser)) {
+            $this->representationsusers[] = $representationsuser;
+            $representationsuser->setRepresentations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentationsuser(RepresentationsUsers $representationsuser): self
+    {
+        if ($this->representationsusers->removeElement($representationsuser)) {
+            // set the owning side to null (unless already changed)
+            if ($representationsuser->getRepresentations() === $this) {
+                $representationsuser->setRepresentations(null);
+            }
+        }
 
         return $this;
     }
