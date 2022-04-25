@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des réservations{% endblock %}
+
+{% block body %}
+    <h1>Liste des {{ resource }}</h1>
+
+     <ul>
+    {% for representationuser in representationusers %}
+        <li><a href="{{ path('representations_users_show', { id:representationuser .id }) }}">{{ representationuser .places }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

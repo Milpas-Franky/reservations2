@@ -32,6 +32,7 @@ class RepresentationsController extends AbstractController
 
         return $this->render('representations/show.html.twig', [
             'representation' => $representation,
+			
         ]);
     }
 

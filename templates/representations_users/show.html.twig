@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}réservation d'un utilisateur{% endblock %}
+
+{% block body %}
+<nav><a href="{{ path('app_representations_users') }}">Retour à l'index</a></nav>
+              <h1>{{ resource }}</h1>
+    <h2>{{ representationuser.users.firstname }} {{ representationuser.users.lastname }}</h2>
+    
+        <h4>Représentation du {{ representationuser.representations.schedule|date('d/m/Y') }} à {{ representationuser.representations.schedule|date('G:i') }}</h4>
+        <h4> titre : {{representationuser.representations.theShow.title}}</h4>
+		<h4> lieu : {% if representationuser.representations.theLocation.designation %}
+		           {{representationuser.representations.theLocation.designation}}
+				   {% else %}
+                     <em>à déterminer</em> 
+                   {% endif %}
+				   </h4>
+		<h4> places : {{representationuser.places}}</h4>
+{% endblock %}
