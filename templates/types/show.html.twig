@@ -3,6 +3,14 @@
 {% block title %}Fiche d'un type{% endblock %}
 
 {% block body %}
+<nav><a href="{{ path('app_types') }}">Retour à l'index</a></nav>
     <h1>{{ type.type|capitalize }}</h1>
-    <nav><a href="{{ path('app_types') }}">Retour à l'index</a></nav>
+        <h2>Liste des artistes</h2>
+    <ul>
+    {% for artistType in type.artists %} 
+ 
+        <li>{{ artistType.artist.firstname }} {{ artistType.artist.lastname }}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}

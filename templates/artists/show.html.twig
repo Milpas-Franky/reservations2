@@ -3,6 +3,13 @@
 {% block title %}Fiche d'un artiste{% endblock %}
 
 {% block body %}
+<nav><a href="{{ path('app_artists') }}">Retour à l'index</a></nav>
     <h1>{{ artist.firstname }} {{ artist.lastname }}</h1>
-   <nav><a href="{{ path('app_artists') }}">Retour à l'index</a></nav>
+       <h2>Liste des types</h2>
+    <ul>
+    {% for artistType in artist.types  %}
+        <li>{{ artistType.type.type }}</li> 
+    {% endfor %}
+    </ul>
+
 {% endblock %}
