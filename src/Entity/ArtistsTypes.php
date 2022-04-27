@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArtistsTypesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,6 +40,16 @@ class ArtistsTypes
      */
     private $type;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Shows::class, mappedBy="artistsTypes")
+     */
+    private $shows;
+
+    public function __construct()
+    {
+        $this->shows = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +75,33 @@ class ArtistsTypes
     public function setType(?Types $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Shows>
+     */
+    public function getShows(): Collection
+    {
+        return $this->shows;
+    }
+
+    public function addShow(Shows $show): self
+    {
+        if (!$this->shows->contains($show)) {
+            $this->shows[] = $show;
+            $show->addArtistsType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShow(Shows $show): self
+    {
+        if ($this->shows->removeElement($show)) {
+            $show->removeArtistsType($this);
+        }
 
         return $this;
     }
