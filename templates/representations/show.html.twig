@@ -12,7 +12,8 @@
         {% if representation.theLocation %}
         {{ representation.theLocation.designation }}
         {% elseif representation.theShow.location %}
-        {{ representation.theShow.theLocation.designation }}
+        {{ representation.theShow.location.designation }}
+		
         {% else %}
          <em>à déterminer</em> 
         {% endif %}

@@ -3,6 +3,7 @@
 {% block title %}Fiche d'un lieu{% endblock %}
 
 {% block body %}
+ <nav><a href="{{ path('app_locations') }}">Retour à l'index</a></nav>
     <article>
         <h1>{{ location.designation }}</h1>
         <address>
@@ -31,5 +32,4 @@
 
     </article>
 
-    <nav><a href="{{ path('app_locations') }}">Retour à l'index</a></nav>
 {% endblock %}

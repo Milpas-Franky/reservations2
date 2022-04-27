@@ -9,7 +9,7 @@
     
         <h4>Représentation du {{ representationuser.representations.schedule|date('d/m/Y') }} à {{ representationuser.representations.schedule|date('G:i') }}</h4>
         <h4> titre : {{representationuser.representations.theShow.title}}</h4>
-		<h4> lieu : {% if representationuser.representations.theLocation.designation %}
+		<h4> lieu : {% if representationuser.representations.theLocation %}
 		           {{representationuser.representations.theLocation.designation}}
 				   {% else %}
                      <em>à déterminer</em> 
