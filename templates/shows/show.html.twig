@@ -12,7 +12,11 @@
         {% else %}
         <canvas width="200" height="100" style="border:1px solid #000000;"></canvas>
         {% endif %}
-
+		
+        {% if show.description %}
+        <p><strong>Description:</strong> {{ show.description }}</p>
+        {% endif %}
+		
         {% if show.location %}
         <p><strong>Lieu de création:</strong> {{ show.location.designation }}</p>
         {% endif %}
@@ -34,6 +38,18 @@
         {% else %}
         <p>Aucune représentation</p>
         {% endif %}
+		
+                 <h2>Liste des artistes</h2>
+                    <ul>
+            {% for collaborateur in show.artistsTypes %}
+                <li>
+                    {{ collaborateur.artist.firstname }}
+                    {{ collaborateur.artist.lastname }}
+                    ({{ collaborateur.type.type }})
+                </li>              
+            {% endfor %}
+        </ul>
+  
 
     </article>
 

@@ -29,7 +29,7 @@ class ShowsController extends AbstractController
     {
         $repository = $this->getDoctrine()->getRepository(Shows::class);
         $show = $repository->find($id);
-
+		
         return $this->render('shows/show.html.twig', [
             'show' => $show,
         ]);
