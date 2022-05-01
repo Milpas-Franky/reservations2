@@ -3,11 +3,11 @@
 {% block title %}Liste des spectacles{% endblock %}
 
 {% block body %}
-    <h1>Liste des {{ resource }}</h1>
+    <h2>Liste des {{ resource }}</h2>
 
     <ul>
-    {% for show in shows %}
-        <li><a href="{{ path('shows_show', { id: show.id }) }}">{{ show.title }}</a>
+      {% for show in shows %}
+        <li>{{ show.title }}
             {% if show.bookable %}
             <span>{{ show.price }} €</span>
             {% endif %}
@@ -31,10 +31,7 @@
         </ul>
         
             {% endif %}
-
-        </li>
-    {% endfor %}
+		</li>
+      {% endfor %}
     </ul>
 {% endblock %}
-
-
