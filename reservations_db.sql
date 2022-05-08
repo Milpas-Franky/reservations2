@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 28 avr. 2022 à 10:18
+-- Généré le :  Dim 08 mai 2022 à 16:51
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `representations` (
   PRIMARY KEY (`id`),
   KEY `IDX_C90A401D0C1FC64` (`show_id`),
   KEY `IDX_C90A40164D218E` (`location_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `representations`
@@ -205,8 +205,9 @@ CREATE TABLE IF NOT EXISTS `representations` (
 INSERT INTO `representations` (`id`, `show_id`, `location_id`, `schedule`) VALUES
 (93, 121, 125, '2012-10-12 13:30:00'),
 (94, 121, 126, '2012-10-12 20:30:00'),
-(95, 122, NULL, '2012-10-02 20:30:00'),
-(96, 123, NULL, '2012-10-16 20:30:00');
+(95, 122, 126, '2012-10-02 20:30:00'),
+(96, 123, NULL, '2012-10-16 20:30:00'),
+(97, 124, 127, '2012-11-05 00:00:00');
 
 -- --------------------------------------------------------
 
