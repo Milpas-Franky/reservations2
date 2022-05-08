@@ -4,9 +4,11 @@
         <meta charset="UTF-8">
         <title>Projet réservations - {% block title %}{% endblock %}</title>
 		 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         
-
-        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
                 <h3 class="my-0 mr-md-auto font-weight-normal" style="margin-right:300px;">Projet Réservations</h3>
             <form class="form-inline mt-2 mt-md-0" style="margin-right:200px;">
 			    <p class="d-flex flex-column flex-md-row align-items-center">
@@ -14,23 +16,59 @@
 			          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style=";">🔍</button>
            	    </p> 		
             </form>
-                <a class="btn btn-outline-primary" href="{{ path('app_connection') }}" style="
+                <a class="btn btn-outline-primary" href="#" style="
                  margin-right:  10px;
                  background-color:  lightgreen;
                  border-color: green;
-                 color:  darkgreen;">Se connecter</a>
-                 <a class="btn btn-outline-primary" href="{{ path('app_inscription') }}">S'inscrire</a>
+                 color:  darkgreen;">Se déconnecter</a>
+                 
         </div>
      
                 {% block stylesheets %}{% endblock %}
     </head>
     <body>
 	      <div class="container">
+		     <div class="container-fluid">
+	
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"> <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#"></a>
+      </li>
+    </ul>
+    <div class="mx-auto">
+	  	<a href="#" class="navbar-brand">Accueil</a>
+	</div>
+    <div class="mx-auto">
+	  	<a href="#" class="navbar-brand">Prochains spectacles</a>
+	</div>
+	<div class="mx-auto">
+	  	<a href="#" class="navbar-brand">Administration</a>
+	</div>
+    <div class="mx-auto">
+	  	<a href="#" class="navbar-brand">Contact</a>
+	</div>
+	
+</nav>
+</div>
 		     {% block body %}{% endblock %}
 		</div>
 		
 	      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
             <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+			
             {% block javascripts %}{% endblock %}
     </body>
     <footer>

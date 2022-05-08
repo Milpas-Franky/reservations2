@@ -25,7 +25,7 @@ class RepresentationsFixtures extends Fixture implements DependentFixtureInterfa
                 'schedule'=>'2012-10-12 20:30',
             ],
             [
-                'the_location'=>null,
+                'the_location'=>'dexia-art-center',
                 'the_show'=>'cible-mouvante',
                 'schedule'=>'2012-10-02 20:30',
             ],
@@ -33,6 +33,11 @@ class RepresentationsFixtures extends Fixture implements DependentFixtureInterfa
                 'the_location'=>null,
                 'the_show'=>'ceci-n-est-pas-un-chanteur-belge',
                 'schedule'=>'2012-10-16 20:30',
+            ],
+			[
+                'the_location'=>'la-samaritaine',
+                'the_show'=>'Manneke… !',
+                'schedule'=>' ',
             ],
         ];
         

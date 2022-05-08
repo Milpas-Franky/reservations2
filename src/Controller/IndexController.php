@@ -18,7 +18,7 @@ class IndexController extends AbstractController
         
         return $this->render('index/index.html.twig', [
             'shows' => $shows,
-            'resource' => 'spectacles',
+            'resource' => 'Liste des spectacles',
         ]);
     }
 	

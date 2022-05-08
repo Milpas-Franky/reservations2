@@ -1,6 +1,38 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Fiche d'inscription{% endblock %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Projet réservations </title>
+		 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        
+        
+         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+                <h3 class="my-0 mr-md-auto font-weight-normal" style="margin-right:300px;">Projet Réservations</h3>
+            <form class="form-inline mt-2 mt-md-0" style="margin-right:200px;">
+			    <p class="d-flex flex-column flex-md-row align-items-center">
+		              <input class="form-control mr-sm-2" type="text" placeholder="Rechercher" style=";" aria-label="Search" /> 
+			          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style=";">🔍</button>
+           	    </p> 		
+            </form>
+                <a class="btn btn-outline-primary" href="{{ path('app_connection') }}" style="
+                 margin-right:  10px;
+                 background-color:  lightgreen;
+                 border-color: green;
+                 color:  darkgreen;">Se connecter</a>
+                 <a class="btn btn-outline-primary" href="{{ path('app_inscription') }}">S'inscrire</a>
+        </div>
+     
+                {% block stylesheets %}
+				<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="{{asset('datatables/DataTables-1.11.5/css/jquery.dataTables.min.css')}}"/>
+<!-- DataTables Responsive CSS -->
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 14px/1.5 sans-serif; }
+</style>
+				{% endblock %}
+    </head>
+ <body>
+	      <div class="container">
 
 {% block body %}
 <div style="padding-left:30%">
@@ -91,3 +123,10 @@
 	</div>
 </div> 	
 {% endblock %}
+</body>
+    <footer>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <h4 class="my-0 mr-md-auto font-weight-normal" style="margin-left:500px;">Projet Réservations icc/EPFC 2022</h4>
+        </div>
+    </footer>
+</html>

@@ -13,9 +13,18 @@
         {{ representation.theLocation.designation }}
         {% elseif representation.theShow.location %}
         {{ representation.theShow.location.designation }}
-		
-        {% else %}
+		{% else %}
          <em>à déterminer</em> 
         {% endif %}
-        </p>
+		</p>
+		
+		 <p><strong>Localitée:</strong>
+         {% if representation.theLocation %}
+        {{ representation.theLocation.locality.locality }}		 
+        {% elseif representation.theShow.location %}
+        {{ representation.theShow.location.locality.locality }}
+		{% else %}
+         <em>à déterminer</em> 
+        {% endif %}
+		</p>
 {% endblock %}

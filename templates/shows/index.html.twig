@@ -1,40 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des spectacles{% endblock %}
-
+{% block title %}{{ resource}}{% endblock %}
+{% block stylesheets %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="{{asset('datatables/DataTables-1.11.5/css/jquery.dataTables.min.css')}}"/>
+<!-- DataTables Responsive CSS -->
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 14px/1.5 sans-serif; }
+</style>
+{% endblock %}                
 {% block body %}
-    <h1>Liste des {{ resource }}</h1>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    <ul>
-    {% for show in shows %}
-        <li><a href="{{ path('shows_show', { id: show.id }) }}">{{ show.title }}</a>
-            {% if show.bookable %}
-            <span>{{ show.price }} €</span>
-            {% endif %}
-			{% if show.representations|length==1 %}
-            - <span>1 représentation</span>
-            {% elseif show.representations|length>1 %}
-            - <span>{{ show.representations|length }} représentations</span>
-            {% else %}
-            - <em>aucune représentation</em>
-            {% endif %}
-             {% if show.representations|length >=1 %}
-        <ul>
-            {% for representation in show.representations %}
-                <li>Date : {{ representation.schedule|date('d/m/Y G:i:s') }}</li>
-				{% if show.location %}
-				<li>Lieu : {{ show.location.designation }}</li></br>
-				{% else %}
-                <em>Lieu : à déterminer</em>
-				{% endif %}
+<div class="example-wrapper">
+    <h1>{{ resource }}</h1>
+
+    <table id="table_shows" class="display" >
+        <thead>
+            <tr>
+                 <th>Titre</th>
+				 <th>Auteur</th>
+				 <th>Lieu</th>
+				 <th>Representations</th>
+				 <th>Prix</th>
+                 <th>Réservable</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for show  in shows %}
+            <tr>
+                  <td><a href="{{ path('shows_show', { id: show.id }) }}">{{ show.title|title }}</a></td>
+			      <td>              
+            {% for collaborateur in show.artistsTypes %}
+			{% if collaborateur.type.type=='auteur' %}
+                
+				   {{ collaborateur.artist.firstname }}
+				   {{ collaborateur.artist.lastname }}
+					
+								
+            {% endif %}             
             {% endfor %}
-        </ul>
-        
+                 </td>
+			{% if show.location %}
+				  <td>{{ show.location.designation  }}</td>
+			{% else %}
+                 <td> <em>à déterminer</em></td> 
             {% endif %}
+				<td>{{ show.representations|length }}</td>
+                <td>{{ show.price|number_format(2, ',', '.') }}&nbsp;&euro;</td>
+            {% if show.bookable %}
+                <td>Oui</td>
+            {% else %}
+                <td>Non</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        
+    </table>
 
-        </li>
-    {% endfor %}
-    </ul>
+    <p>Total: {{ shows|length }} spectacles.</p></div>
 {% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('datatables/jQuery-3.6.0/jquery-3.6.0.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/jquery.dataTables.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/dataTables.bootstrap.min.js') }}"> </script>
+<script>
+$(document).ready( function () {
+    $('#table_shows').DataTable({
+            responsive: true
+    });
+} );   
+</script>
+{% endblock %} 
 
 

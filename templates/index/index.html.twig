@@ -1,39 +1,114 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Liste des spectacles{% endblock %}
-
-{% block body %}
- <div style="padding-left:30%">
-    <h2>Liste des {{ resource }}</h2>
-
-    <ul>
-      {% for show in shows %}
-        <li>{{ show.title }}
-            {% if show.bookable %}
-            <span>{{ show.price }} €</span>
-            {% endif %}
-			{% if show.representations|length==1 %}
-            - <span>1 représentation</span>
-            {% elseif show.representations|length>1 %}
-            - <span>{{ show.representations|length }} représentations</span>
-            {% else %}
-            - <em>aucune représentation</em>
-            {% endif %}
-             {% if show.representations|length >=1 %}
-        <ul>
-            {% for representation in show.representations %}
-                <li>Date : {{ representation.schedule|date('d/m/Y G:i:s') }}</li>
-				{% if show.location %}
-				<li>Lieu : {{ show.location.designation }}</li></br>
-				{% else %}
-                <em>Lieu : à déterminer</em>
-				{% endif %}
-            {% endfor %}
-        </ul>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Projet réservations </title>
+		 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
         
+        
+         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+                <h3 class="my-0 mr-md-auto font-weight-normal" style="margin-right:300px;">Projet Réservations</h3>
+            <form class="form-inline mt-2 mt-md-0" style="margin-right:200px;">
+			    <p class="d-flex flex-column flex-md-row align-items-center">
+		              <input class="form-control mr-sm-2" type="text" placeholder="Rechercher" style=";" aria-label="Search" /> 
+			          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style=";">🔍</button>
+           	    </p> 		
+            </form>
+                <a class="btn btn-outline-primary" href="{{ path('app_connection') }}" style="
+                 margin-right:  10px;
+                 background-color:  lightgreen;
+                 border-color: green;
+                 color:  darkgreen;">Se connecter</a>
+                 <a class="btn btn-outline-primary" href="{{ path('app_inscription') }}">S'inscrire</a>
+        </div>
+     
+                {% block stylesheets %}
+				<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="{{asset('datatables/DataTables-1.11.5/css/jquery.dataTables.min.css')}}"/>
+<!-- DataTables Responsive CSS -->
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 14px/1.5 sans-serif; }
+</style>
+				{% endblock %}
+    </head>
+    <body>
+	      <div class="container">
+		     {% block body %}
+			 <style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>{{ resource }}</h1>
+
+    <table id="table_shows" class="display" >
+        <thead>
+            <tr>
+                 <th>Titre</th>
+				 <th>Auteur</th>
+				 <th>Lieu</th>
+				 <th>Representations</th>
+				 <th>Prix</th>
+                 <th>Réservable</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for show  in shows %}
+            <tr>
+                  <td>{{ show.title|title }}</td>
+			      <td>              
+            {% for collaborateur in show.artistsTypes %}
+			{% if collaborateur.type.type=='auteur' %}
+                
+				   {{ collaborateur.artist.firstname }}
+				   {{ collaborateur.artist.lastname }}
+					
+								
+            {% endif %}             
+            {% endfor %}
+                 </td>
+			{% if show.location %}
+				  <td>{{ show.location.designation  }}</td>
+			{% else %}
+                 <td> <em>à déterminer</em></td> 
             {% endif %}
-		</li>
-      {% endfor %}
-    </ul>
- </div>
-{% endblock %}
+				<td>{{ show.representations|length }}</td>
+                <td>{{ show.price|number_format(2, ',', '.') }}&nbsp;&euro;</td>
+            {% if show.bookable %}
+                <td>Oui</td>
+            {% else %}
+                <td>Non</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        
+    </table>
+
+    <p>Total: {{ shows|length }} spectacles.</p></div>
+			 {% endblock %}
+		</div>
+		
+	      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+            <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+			
+            {% block javascripts %}
+			<script type="text/javascript" src="{{ asset('datatables/jQuery-3.6.0/jquery-3.6.0.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/jquery.dataTables.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/dataTables.bootstrap.min.js') }}"> </script>
+<script>
+$(document).ready( function () {
+    $('#table_shows').DataTable({
+            responsive: true
+    });
+} );   
+</script>
+			{% endblock %}
+    </body>
+    <footer>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <h4 class="my-0 mr-md-auto font-weight-normal" style="margin-left:500px;">Projet Réservations icc/EPFC 2022</h4>
+        </div>
+    </footer>
+</html>
