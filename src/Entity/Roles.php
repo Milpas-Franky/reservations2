@@ -6,6 +6,8 @@ use App\Repository\RolesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Users;
+use App\Entity\Roles;
 
 /**
  * @ORM\Entity(repositoryClass=RolesRepository::class)

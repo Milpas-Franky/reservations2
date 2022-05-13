@@ -3,26 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\RolesRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\http\Authentication\AuthenticationUtils;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
   * @ORM\Table(name="users")
- * @UniqueEntity(
- *      fields="login",
- *      message="This login is already taken."
- * )
- * @UniqueEntity(
- *      fields="email",
- *      message="This email is already taken."
- * )
-
  */
-class Users
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
+   /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -30,102 +24,31 @@ class Users
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, unique=true)
-     */
-    private $login;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $langue;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Roles::class, inversedBy="users")
+     * @ORM\JoinTable(name="users_roles")
      */
-    private $roles;
+    private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity=RepresentationsUsers::class, mappedBy="users", orphanRemoval=true)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
-    private $usersrepresentations;
+    private $password;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->usersrepresentations = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -140,30 +63,43 @@ class Users
         return $this;
     }
 
-    public function getLangue(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->langue;
-    }
-
-    public function setLangue(string $langue): self
-    {
-        $this->langue = $langue;
-
-        return $this;
+        return (string) $this->email;
     }
 
     /**
-     * @return Collection<int, Roles>
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
-    public function getRoles(): Collection
+    public function getUsername(): string
     {
-        return $this->roles;
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(RolesRepository $repository): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roleMember = $repository->findByRole('member');
+
+        $roles[] = $roleMember;
+dd($roles->toArray());
+        return array_unique($roles->toArray()); 
     }
 
     public function addRole(Roles $role): self
     {
         if (!$this->roles->contains($role)) {
             $this->roles[] = $role;
+            $role->addUser($this);
         }
 
         return $this;
@@ -171,38 +107,45 @@ class Users
 
     public function removeRole(Roles $role): self
     {
-        $this->roles->removeElement($role);
+        if ($this->roles->removeElement($role)) {
+            $role->removeUser($this);
+        }
 
         return $this;
     }
 
     /**
-     * @return Collection<int, RepresentationsUsers>
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getUsersrepresentations(): Collection
+    public function getPassword(): string
     {
-        return $this->usersrepresentations;
+        return $this->password;
     }
 
-    public function addUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    public function setPassword(string $password): self
     {
-        if (!$this->usersrepresentations->contains($usersrepresentation)) {
-            $this->usersrepresentations[] = $usersrepresentation;
-            $usersrepresentation->setUsers($this);
-        }
+        $this->password = $password;
 
         return $this;
     }
 
-    public function removeUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        if ($this->usersrepresentations->removeElement($usersrepresentation)) {
-            // set the owning side to null (unless already changed)
-            if ($usersrepresentation->getUsers() === $this) {
-                $usersrepresentation->setUsers(null);
-            }
-        }
+        return null;
+    }
 
-        return $this;
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }
