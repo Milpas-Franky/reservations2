@@ -29,6 +29,7 @@ class Roles
 
     /**
      * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="roles")
+     * @ORM\JoinTable(name="users_roles")
      */
     private $users;
 
