@@ -111,6 +111,7 @@ class ArtistsTypesFixtures extends Fixture implements DependentFixtureInterface
             $at = new ArtistsTypes();
             $at->setArtist($artist);
             $at->setType($type);
+            
             //Définir son type
             $artist->addType($at);
                         $this->addReference(
