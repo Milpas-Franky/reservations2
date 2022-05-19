@@ -40,6 +40,26 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $login;
+
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    private $langue;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -84,15 +104,21 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(RolesRepository $repository): array
+    public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roleMember = $repository->findByRole('member');
 
-        $roles[] = $roleMember;
-dd($roles->toArray());
-        return array_unique($roles->toArray()); 
+        $roles = $roles->toArray();
+
+        foreach ($roles as &$role) {
+            $role = $role->getRole();
+        }
+        unset($role);
+
+        // guarantee every user at least has ROLE_MEMBER
+        $roles[] = 'ROLE_MEMBER';
+
+        return array_unique($roles); 
     }
 
     public function addRole(Roles $role): self
@@ -147,5 +173,53 @@ dd($roles->toArray());
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): self
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getLangue(): ?string
+    {
+        return $this->langue;
+    }
+
+    public function setLangue(string $langue): self
+    {
+        $this->langue = $langue;
+
+        return $this;
     }
 }

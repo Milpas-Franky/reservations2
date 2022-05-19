@@ -14,6 +14,9 @@ class RolesFixtures extends Fixture
         // $manager->persist($product);
 
         $roles = [
+            ['ROLE_ADMIN'],
+            ['ROLE_MEMBER'],
+            ['ROLE_AFFILIATE'],
             ['role'=>'admin'],
             ['role'=>'member'],
             ['role'=>'affiliate'],
