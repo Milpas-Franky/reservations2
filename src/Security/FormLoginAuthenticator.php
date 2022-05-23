@@ -36,13 +36,13 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
 
 
-    public function __construct(EntityManagerInterface $entityManager, $router, $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+   /* public function __construct(EntityManagerInterface $entityManager, $router, $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
-    }
+    }*/
 
     public function supports(Request $request):bool
     {
@@ -103,7 +103,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('app_form_connection');
     }
 
-    
+
 	/**
 	 * @return mixed
 	 */
