@@ -2,19 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
 use App\Repository\RolesRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\http\Authentication\AuthenticationUtils;
+use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
   * @ORM\Table(name="users")
+  * @UniqueEntity(
+ *      fields="username",
+ *      message="This username is already taken."
+ * )
+ * @UniqueEntity(
+ *      fields="email",
+ *      message="This email is already taken."
+ * )
  */
-class Users implements UserInterface, PasswordAuthenticatedUserInterface
+class Users implements UserInterface
 {
    /**
      * @ORM\Id
@@ -35,36 +45,22 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
+     * @ORM\OneToMany(targetEntity=RepresentationsUsers::class, mappedBy="users", orphanRemoval=true)
+     */
+    private $usersrepresentations;
+
+
+    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $login;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $langue;
-
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->usersrepresentations = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -108,6 +104,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
 
+        if(empty($roles)){
+            $roles[] ='ROLE_MEMBER';
+        }
+
         $roles = $roles->toArray();
 
         foreach ($roles as &$role) {
@@ -116,8 +116,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         unset($role);
 
         // guarantee every user at least has ROLE_MEMBER
-        $roles[] = 'ROLE_MEMBER';
+        /*$roles[] = 'ROLE_MEMBER';
 
+        $roles = [
+            'ROLE_ADMIN',
+            'ROLE_MEMBER',
+        ];*/
+
+//dd($roles->toArray());
         return array_unique($roles); 
     }
 
@@ -125,7 +131,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->roles->contains($role)) {
             $this->roles[] = $role;
-            $role->addUser($this);
+            //$role->addUser($this);
         }
 
         return $this;
@@ -134,7 +140,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRole(Roles $role): self
     {
         if ($this->roles->removeElement($role)) {
-            $role->removeUser($this);
+            //$role->removeUser($this);
         }
 
         return $this;
@@ -161,6 +167,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      */
+
+     /**
+     * @return Collection<int, RepresentationsUsers>
+     */
+    public function getUsersrepresentations(): Collection
+    {
+        return $this->usersrepresentations;
+    }
+
+    public function addUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    {
+        if (!$this->usersrepresentations->contains($usersrepresentation)) {
+            $this->usersrepresentations[] = $usersrepresentation;
+            $usersrepresentation->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersrepresentation(RepresentationsUsers $usersrepresentation): self
+    {
+        if ($this->usersrepresentations->removeElement($usersrepresentation)) {
+            // set the owning side to null (unless already changed)
+            if ($usersrepresentation->getUsers() === $this) {
+                $usersrepresentation->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
     public function getSalt(): ?string
     {
         return null;
@@ -173,53 +209,5 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getLangue(): ?string
-    {
-        return $this->langue;
-    }
-
-    public function setLangue(string $langue): self
-    {
-        $this->langue = $langue;
-
-        return $this;
     }
 }
