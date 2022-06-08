@@ -3,16 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use App\Repository\RolesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
   * @ORM\Table(name="users")
  * @UniqueEntity(
- *      fields="login",
- *      message="This login is already taken."
+ *      fields="username",
+ *      message="This username is already taken."
  * )
  * @UniqueEntity(
  *      fields="email",
@@ -20,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
 
  */
-class Users
+class Users implements UserInterface 
 {
     /**
      * @ORM\Id
@@ -30,9 +33,11 @@ class Users
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, unique=true)
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2, max=50)
      */
-    private $login;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -61,8 +66,11 @@ class Users
 
     /**
      * @ORM\ManyToMany(targetEntity=Roles::class, inversedBy="users")
+	 * @ORM\JoinTable(name="users_roles")
+	 * joinColumns={@ORM\JoinColumn(name="users_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="roles_id", referencedColumnName="id")}
      */
-    private $roles;
+    private $roles = [];
 
     /**
      * @ORM\OneToMany(targetEntity=RepresentationsUsers::class, mappedBy="users", orphanRemoval=true)
@@ -80,17 +88,16 @@ class Users
         return $this->id;
     }
 
-    public function getLogin(): ?string
+     public function getUsername(): string
     {
-        return $this->login;
+        return $this->username;
     }
+	
+	public function setUsername(string $username): void
+                   {
+                       $this->username = $username;
+                   }
 
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
-
-        return $this;
-    }
 
     public function getPassword(): ?string
     {
@@ -153,13 +160,37 @@ class Users
     }
 
     /**
-     * @return Collection<int, Roles>
+	 * @see UserInterface
      */
-    public function getRoles(): Collection
+    public function getRoles(): array
     {
-        return $this->roles;
+         $roles = $this->roles;
+		 
+		   // il est obligatoire d'avoir au moins un rôle si on est authentifié, par convention c'est ROLE_MEMBER
+        if (empty($roles)) {
+			 
+			 $roles[]='ROLE_MEMBER';
+             addRole( $roles);
+        }  
+		 else {
+		   $roles = $roles->toArray();
+          foreach ($roles as &$role) {
+            $role = $role->getRole();
+        }
+        unset($role);
+		}	
+      
+        
+
+        return array_unique($roles); 
     }
 
+    public function setRoles(array $roles): void
+    {    
+	    
+        $this->roles = $roles;
+    }
+	
     public function addRole(Roles $role): self
     {
         if (!$this->roles->contains($role)) {
@@ -205,4 +236,13 @@ class Users
 
         return $this;
     }
+	 public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+	
 }

@@ -3,11 +3,13 @@
 {% block title %}Liste des réservations{% endblock %}
 
 {% block body %}
-    <h1>Liste des {{ resource }}</h1>
-
+    <h1>Liste de mes {{ resource }}</h1>
+    
      <ul>
     {% for representationuser in representationusers %}
-        <li><a href="{{ path('representations_users_show', { id:representationuser .id }) }}">{{ representationuser .places }}</a></li>
+	   <li><h4>Réservation du {{ representationuser.representations.schedule|date('d/m/Y') }} à {{ representationuser.representations.schedule|date('G:i') }}</h4></li>
+	   <li> <h4> places :{{ representationuser .places }}</h4></li>
+	   <a href="{{ path('representations_users_show', { id:representationuser .id }) }}">Détails</a>
     {% endfor %}
     </ul>
 

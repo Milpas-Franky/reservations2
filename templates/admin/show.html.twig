@@ -3,9 +3,13 @@
 {% block title %}Fiche d'un spectacle{% endblock %}
 
 {% block body %}
-<nav><a href="{{ path('app_shows') }}">Retour à la liste</a></nav>
+<h4 style="text-align:center">Administration</h4>
+<nav><a href="{{ path('app_admin') }}">Retour à la liste</a></nav>
     <article>
-        <p><h2><strong>spectacle:</strong> {{ show.title }} </h2></p>
+        <p><h2><strong>spectacle:</strong> {{ show.title }} </h2>
+		Modifier le spectacle : <a href="{{ path('app_updat', { id: show.id })}}">{{ show.title }}</a></br>
+		Supprimer le spectacle : <a href="{{ path('app_delet', { id: show.id })}}">{{ show.title }}</a>
+		</p>
         
         {% if show.posterUrl %}
         <p><img src="{{ asset('images/' ~ show.posterUrl) }}" alt="{{ show.title }}" width="200"></p>
@@ -32,7 +36,7 @@
         {% if show.representations|length>=1 %}
         <ul>
             {% for representation in show.representations %}
-               <p>Réservez ici<li>numero du spectacle : <a href="{{ path('representations_users_reservation', { id: representation.id })}}">{{ representation.id }}</a></li>
+               <p>Réservez ici<li>numero du spectacle : {{ representation.id }}</li>
                 <li>date : {{ representation.schedule|date('d/m/Y G:i:s') }}</li></p>			   
             {% endfor %}
         </ul>

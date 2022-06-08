@@ -15,7 +15,7 @@ class UsersFixtures extends Fixture
         // $manager->persist($product);
                  $users = [
             [
-                'login'=>'bob',
+                'username'=>'fred',
                 'password'=>'123',
 				'firstname'=>'bob',
                 'lastname'=>'Dylan',
@@ -24,7 +24,7 @@ class UsersFixtures extends Fixture
                 
             ],
             [
-                'login'=>'fred',
+                'username'=>'fred',
                 'password'=>'123',
 				'firstname'=>'fred',
                 'lastname'=>'Mercuri',
@@ -33,7 +33,7 @@ class UsersFixtures extends Fixture
                 
             ],
              [
-                'login'=>'stef',
+                'username'=>'stef',
                 'password'=>'123',
 				'firstname'=>'stef',
                 'lastname'=>'Kapond',
@@ -46,7 +46,7 @@ class UsersFixtures extends Fixture
         
         foreach ($users as $record) {
             $user = new Users();
-            $user->setLogin($record['login']);
+            $user->setUsername($record['username']);
 
             //Hasher le mot de passe
             $user->setPassword(password_hash($record['password'], PASSWORD_BCRYPT));

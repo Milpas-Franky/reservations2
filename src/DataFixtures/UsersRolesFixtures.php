@@ -11,26 +11,21 @@ class UsersRolesFixtures extends Fixture implements DependentFixtureInterface
     {
         // $product = new Product();
         // $manager->persist($product);
-$usersroles = [
+        $usersroles = [
             [
                 'firstname'=>'bob',
                 'lastname'=>'Dylan',
-                'role'=>'admin',
+                'role'=>'ROLE_ADMIN',
             ],
             [
                 'firstname'=>'fred',
                 'lastname'=>'Mercuri',
-                'role'=>'member',
-            ],
-			[
-                'firstname'=>'stef',
-                'lastname'=>'Kapond',
-                'role'=>'member',
+                'role'=>'ROLE_MEMBER',
             ],
             [
                 'firstname'=>'stef',
                 'lastname'=>'Kapond',
-                'role'=>'affiliate',
+                'role'=>'ROLE_AFFILIATE',
             ],
 			
                 ];

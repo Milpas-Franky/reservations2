@@ -13,21 +13,20 @@ class RolesFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        $roles = [
-            ['role'=>'admin'],
-            ['role'=>'member'],
-            ['role'=>'affiliate'],
-        ];
-        
+        $roles=[
+		    ['role'=>'"ROLE_ADMIN"'],
+            ['role'=>'"ROLE_MEMBER"'],
+			['role'=>'"ROLE_AFFILIATE"']
+	];
         foreach ($roles as $record) {
             $role = new Roles();
             $role->setRole($record['role']);
             
             $manager->persist($role);
-			$this->addReference($record['role'], $role);
+			$this->addReference($record['role'],$role);
         }
-
-
+         
+            
         $manager->flush();
     }
 }

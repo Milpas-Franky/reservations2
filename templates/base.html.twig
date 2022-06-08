@@ -16,11 +16,14 @@
 			          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style=";">🔍</button>
            	    </p> 		
             </form>
-                <a class="btn btn-outline-primary" href="#" style="
+			<span style="color:red; margin-right:1%;">{{ nom }}</span>
+               <a class="btn btn-outline-primary" href="{{ path('app_modifier_profil') }}">Modifier profil</a>
+                <a class="btn btn-outline-primary" href="{{ path('app_index') }}" style="
                  margin-right:  10px;
                  background-color:  lightgreen;
                  border-color: green;
                  color:  darkgreen;">Se déconnecter</a>
+                 
                  
         </div>
      
@@ -49,16 +52,19 @@
       </li>
     </ul>
     <div class="mx-auto">
-	  	<a href="#" class="navbar-brand">Accueil</a>
+	  	<a href="{{ path('app_shows')}}" class="navbar-brand">Accueil</a>
 	</div>
     <div class="mx-auto">
-	  	<a href="#" class="navbar-brand">Prochains spectacles</a>
+	  	<a href="{{ path('app_prochain_spectacle')}}" class="navbar-brand">Prochains spectacles</a>
 	</div>
 	<div class="mx-auto">
-	  	<a href="#" class="navbar-brand">Administration</a>
+	  	<a href="{{ path('app_representations_users') }}" class="navbar-brand">Mes réservations</a>
+	</div>
+	<div class="mx-auto">
+	  	<a href="{{ path('app_admin')}}" class="navbar-brand">Administration</a>
 	</div>
     <div class="mx-auto">
-	  	<a href="#" class="navbar-brand">Contact</a>
+	  	<a href="{{ path('app_contact')}}" class="navbar-brand">Contact</a>
 	</div>
 	
 </nav>
