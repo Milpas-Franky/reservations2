@@ -30,6 +30,17 @@ class CreatController extends AbstractController
 		$show= new Shows();
 		 $form = $this->createForm(CreateType::class, $show);		 
          $form->handleRequest($request);
+		  if ($form->isSubmitted() && $form->isValid()) 
+		      {
+				$show = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($show);
+            $em->flush();
+				
+                return $this->redirect($this->generateUrl('app_admin'));
+        
+			  }
         return $this->render('creat/index.html.twig', [
             'nom' => $name,
 			'formindex' => $form->createView()

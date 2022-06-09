@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProchainSpectacleController!{% endblock %}
-
+{% block title %}{{ resource}}{% endblock %}
+{% block stylesheets %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="{{asset('datatables/DataTables-1.11.5/css/jquery.dataTables.min.css')}}"/>
+<!-- DataTables Responsive CSS -->
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 14px/1.5 sans-serif; }
+</style>
+{% endblock %}                
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -9,12 +16,68 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>{{ resource }}</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/reservations4/src/Controller/ProchainSpectacleController.php'|file_link(0) }}">src/Controller/ProchainSpectacleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/reservations4/templates/prochain_spectacle/index.html.twig'|file_link(0) }}">templates/prochain_spectacle/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <table id="table_shows" class="display" >
+        <thead>
+            <tr>
+                 <th>Titre</th>
+				 <th>Auteur</th>
+				 <th>Lieu</th>
+				 <th>Representations</th>
+				 <th>Prix</th>
+                 <th>Réservable</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for show  in shows %}
+		{% if show.bookable=='0' %}
+            <tr>
+                  <td>{{ show.title|title }}</td>
+			      <td>              
+            {% for collaborateur in show.artistsTypes %}
+			{% if collaborateur.type.type=='auteur' %}
+                
+				   {{ collaborateur.artist.firstname }}
+				   {{ collaborateur.artist.lastname }}
+					
+								
+            {% endif %}             
+            {% endfor %}
+                 </td>
+			{% if show.location %}
+				  <td>{{ show.location.designation  }}</td>
+			{% else %}
+                 <td> <em>à déterminer</em></td> 
+            {% endif %}
+				<td>{{ show.representations|length }}</td>
+                <td>{{ show.price|number_format(2, ',', '.') }}&nbsp;&euro;</td>
+            {% if show.bookable %}
+                <td>Oui</td>
+            {% else %}
+                <td>Non</td>
+            {% endif %}
+            </tr>
+			{% endif %}
+        {% endfor %}
+        </tbody>
+        
+    </table>
+
+    <p>Total: {{ shows|length }} spectacles.</p></div>
 {% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('datatables/jQuery-3.6.0/jquery-3.6.0.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/jquery.dataTables.min.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('datatables/DataTables-1.11.5/js/dataTables.bootstrap.min.js') }}"> </script>
+<script>
+$(document).ready( function () {
+    $('#table_shows').DataTable({
+            responsive: true
+    });
+} );   
+</script>
+{% endblock %} 
+
+
+

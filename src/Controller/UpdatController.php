@@ -21,18 +21,32 @@ use App\Entity\Locality;
 class UpdatController extends AbstractController
 {
     /**
-     * @Route("/updat", name="app_updat")
+     * @Route("/updat/{id}", name="app_updat")
 	 * @IsGranted("ROLE_ADMIN")
      */
-    public function index(Request $request): Response
+    public function index(Request $request, $id):response
     {
          $name= $this->getUser()->getUsername();
-		$show= new Shows();
-		 $form = $this->createForm(UpdateType::class, $show);		 
-         $form->handleRequest($request);
-        return $this->render('updat/index.html.twig', [
-            'nom' => $name,
-			'formindex' => $form->createView()
-        ]);
+		$em = $this->getDoctrine()->getManager();
+        $show = $this->getDoctrine()->getRepository(Shows::class);
+        $show = $show->find($id);
+        $form = $this->createForm(UpdateType::class, $show);
+		$form->handleRequest($request);
+        if ($form->isSubmitted()) 
+		{
+            $show = $form->getData();
+			$em->flush();
+			return $this->redirect($this->generateUrl('app_admin'));
+           
+        }
+
+       return $this->render('updat/index.html.twig', [
+		     'resource' => 'Edition',
+             'nom' => $name,
+			 'formindex' => $form->createView()
+        ]); 
+
+        
+
     }
 }

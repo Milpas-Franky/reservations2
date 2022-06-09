@@ -24,13 +24,13 @@ class UpdateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('slug')
-            ->add('title')
-            ->add('description')
-            ->add('poster_url')
+            
             ->add('bookable')
             ->add('price')
-            
+            ->add('location', EntityType::class, [
+                 'class' => Locations::class,
+                 'choice_label' => 'designation'])
+			 ->add('save', SubmitType::class) 	 
         ;
     }
 

@@ -21,18 +21,26 @@ use App\Entity\Locality;
 class DeletController extends AbstractController
 {
     /**
-     * @Route("/delet", name="app_delet")
+     * @Route("/delet/{id}", name="app_delet")
 	 * @IsGranted("ROLE_ADMIN")
      */
-    public function index(Request $request): Response
+    public function index($id)
     {
-        $name= $this->getUser()->getUsername();
-		$show= new Shows();
-		 $form = $this->createForm(DeleteType::class, $show);		 
-         $form->handleRequest($request);
-        return $this->render('delet/index.html.twig', [
-            'nom' => $name,
-			'formindex' => $form->createView()
-        ]);
+         $name= $this->getUser()->getUsername();
+		$em = $this->getDoctrine()->getManager();
+        $show = $this->getDoctrine()->getRepository(Shows::class);
+        $show = $show->find($id);
+
+        if (!$show) {
+            throw $this->createNotFoundException(
+                'There are no articles with the following id: ' . $id
+            );
+        }
+
+        $em->remove($show);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('app_admin'));
+
     }
 }

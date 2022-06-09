@@ -32,28 +32,7 @@
         {% else %}
         <p><em>Non réservable</em></p>
         {% endif %}
-		        <h2>Liste des représentations</h2>
-        {% if show.representations|length>=1 %}
-        <ul>
-            {% for representation in show.representations %}
-               <p>Réservez ici<li>numero du spectacle : {{ representation.id }}</li>
-                <li>date : {{ representation.schedule|date('d/m/Y G:i:s') }}</li></p>			   
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>Aucune représentation</p>
-        {% endif %}
-		
-                 <h2>Liste des artistes</h2>
-                    <ul>
-            {% for collaborateur in show.artistsTypes %}
-                <li>
-                    {{ collaborateur.artist.firstname }}
-                    {{ collaborateur.artist.lastname }}
-                    ({{ collaborateur.type.type }})
-                </li>              
-            {% endfor %}
-        </ul>
+		        
   
 
     </article>
