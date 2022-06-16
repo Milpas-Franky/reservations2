@@ -36,7 +36,7 @@ class RepresentationsFixtures extends Fixture implements DependentFixtureInterfa
             ],
 			[
                 'the_location'=>'la-samaritaine',
-                'the_show'=>'Manneke… !',
+                'the_show'=>'manneke',
                 'schedule'=>'2012-11-05 00:00',
             ],
         ];

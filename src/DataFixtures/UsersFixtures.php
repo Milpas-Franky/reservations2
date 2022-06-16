@@ -15,8 +15,8 @@ class UsersFixtures extends Fixture
         // $manager->persist($product);
                  $users = [
             [
-                'username'=>'fred',
-                'password'=>'123',
+                'username'=>'bob',
+                'password'=>'123456',
 				'firstname'=>'bob',
                 'lastname'=>'Dylan',
                 'email'=>'bob@sull.com',
@@ -25,7 +25,7 @@ class UsersFixtures extends Fixture
             ],
             [
                 'username'=>'fred',
-                'password'=>'123',
+                'password'=>'123456',
 				'firstname'=>'fred',
                 'lastname'=>'Mercuri',
                 'email'=>'fred@sull.com',
@@ -34,7 +34,7 @@ class UsersFixtures extends Fixture
             ],
              [
                 'username'=>'stef',
-                'password'=>'123',
+                'password'=>'123456',
 				'firstname'=>'stef',
                 'lastname'=>'Kapond',
                 'email'=>'stef@sull.com',
